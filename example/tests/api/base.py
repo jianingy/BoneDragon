@@ -98,22 +98,11 @@ class FunctionalTest(base.TestCase):
         return response
 
     def get_json(self, path, expect_errors=False, headers=None,
-                 extra_environ=None, q=[], **params):
+                 extra_environ=None, **params):
         full_path = self.PATH_PREFIX + path
-        query_params = {'q.field': [],
-                        'q.value': [],
-                        'q.op': [],
-                        }
-        for query in q:
-            for name in ['field', 'op', 'value']:
-                query_params['q.%s' % name].append(query.get(name, ''))
-        all_params = {}
-        all_params.update(params)
-        if q:
-            all_params.update(query_params)
-        print('GET: %s %r' % (full_path, all_params))
+        print('GET: %s %r' % (full_path, params))
         response = self.app.get(full_path,
-                                params=all_params,
+                                params=params,
                                 headers=headers,
                                 extra_environ=extra_environ,
                                 expect_errors=expect_errors)
